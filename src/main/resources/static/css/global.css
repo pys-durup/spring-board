@@ -1,0 +1,41 @@
+input, textarea {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.header .header_logo {
+    float: left;
+}
+
+.header .header_menu {
+    float: right;
+}
+
+.header::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.sidebar {
+    float: left;
+    width: 20%;
+}
+
+.section_board {
+    float: left;
+    width: 75%;
+}
+
+.section_board .record:hover {
+    cursor: pointer;
+    background-color: rgb(209, 247, 199);
+}
+
+
+.section_wrapper::after{
+    content: "";
+    display: block;
+    clear: both;
+}
