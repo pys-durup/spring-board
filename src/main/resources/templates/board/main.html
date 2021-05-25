@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <th:block th:replace="common/config :: configFragment"></th:block>
+
+</head>
+<body>
+    <!-- header -->
+    <th:block th:replace="common/header :: headerFragment"></th:block>
+
+    <div class="section_wrapper">
+        <!-- sidebar -->
+        <th:block th:replace="common/sidebar :: sidebarFragment"></th:block>
+
+        <section class="section_board">
+            <article>
+                <h2>게시판</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>글번호</th>
+                        <th>글제목</th>
+                        <th>글쓴이</th>
+                        <th>글 작성시간</th>
+                        <th>조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="record" onclick="location.href='view.html'" th:onclick="|location.href='@{/board/view}'|">
+                        <td>1</td>
+                        <td>글제목1</td>
+                        <td>글쓴이1</td>
+                        <td>시간</td>
+                        <td>1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+            <article>
+                <button class="btn btn-primary float-end"
+                        th:onclick="|location.href='@{/board/write}'|"
+                        onclick="location.href='write.html'" type="button">글 쓰기
+                </button>
+            </article>
+        </section>
+    </div>
+
+    <!-- footer -->
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
+
+</body>
+</html>

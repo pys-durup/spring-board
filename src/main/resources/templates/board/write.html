@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/config :: configFragment"></th:block>
+    <style>
+     .container {
+        max-width: 560px;
+     }
+    </style>
+</head>
+<body>
+
+<!-- header -->
+<th:block th:replace="common/header :: headerFragment"></th:block>
+
+<div class="section_wrapper">
+    <!-- sidebar -->
+    <th:block th:replace="common/sidebar :: sidebarFragment"></th:block>
+
+    <section class="section_board">
+        <article>
+            <h2>글쓰기</h2>
+            <form action="item.html" th:action="@{/basic/items/add}" method="post">
+                <div>
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" class="form-control">
+                </div>
+                <div>
+                    <label for="content">내용</label>
+                    <textarea class="w-100" id="content" name="content" rows="4" cols="50"></textarea>
+                </div>
+                <hr class="my-4">
+                <div class="row">
+                    <div class="col">
+                        <button class="w-100 btn btn-primary" type="submit">글 작성
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="w-100 btn btn-secondary"
+                                th:onclick="|location.href='@{/board}'|"
+                                onclick="location.href='main.html'" type="button">뒤로가기
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </article>
+    </section>
+</div>
+
+<!-- footer -->
+<th:block th:replace="common/footer :: footerFragment"></th:block>
+
+</body>
+</html>

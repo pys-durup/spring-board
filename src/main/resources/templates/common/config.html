@@ -1,0 +1,18 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">>
+
+    <th:block th:fragment="configFragment">
+        <!--  공통으로 사용할 css, js-->
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="/static/css/bootstrap.min.css" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" href="/static/css/global.css" >
+
+        <!--  Custom page css fragment-->
+        <th:block layout:fragment="css"></th:block>
+
+        <!--  Custom page script fragment -->
+        <th:block layout:fragment="script"></th:block>
+
+        <title>Spring Board</title>
+    </th:block>
+</html>

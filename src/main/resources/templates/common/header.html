@@ -1,0 +1,13 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <!--headerFragment 선언-->
+    <header class="header" th:fragment="headerFragment">
+        <div class="header_logo">
+            <a href="#" th:onclick="|location.href='@{/board}'|">Logo</a>
+        </div>
+        <div class="header_menu">
+            <a href="#" th:onclick="|location.href='@{/login}'|">로그인</a>
+        </div>
+    </header>
+
+</html>
