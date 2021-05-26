@@ -22,23 +22,29 @@
             <h2>글조회</h2>
                 <div>
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" class="form-control" disabled>
+                    <input type="text" id="title" name="title" class="form-control" th:value="${boardDto.title}"disabled>
                 </div>
                 <div>
                     <label for="content">내용</label>
-                    <textarea class="w-100" id="content" name="content" rows="4" cols="50" disabled></textarea>
+                    <textarea class="w-100" id="content" name="content" rows="4" cols="50" th:text="${boardDto.memo}" disabled></textarea>
                 </div>
                 <hr class="my-4">
                 <div class="row">
                     <div class="col">
                         <button class="w-100 btn btn-primary"
-                                th:onclick="|location.href='@{/board/edit}'|"
+                                th:onclick="|location.href='@{/boards/{id}/edit(id=${boardDto.id})}'|"
                                 onclick="location.href='edit.html'" >글 수정
                         </button>
                     </div>
                     <div class="col">
+                        <button class="w-100 btn btn-primary"
+                                th:onclick="|location.href='@{/boards/{id}/delete(id=${boardDto.id})}'|"
+                                onclick="location.href='edit.html'" >글 삭제
+                        </button>
+                    </div>
+                    <div class="col">
                         <button class="w-100 btn btn-secondary"
-                                th:onclick="|location.href='@{/board}'|"
+                                th:onclick="|location.href='@{/boards}'|"
                                 onclick="location.href='main.html'" type="button">뒤로가기
                         </button>
                     </div>

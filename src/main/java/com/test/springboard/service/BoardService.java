@@ -7,4 +7,5 @@ import java.util.List;
 public interface BoardService {
     long savePost(BoardDto boardDto);
     List getBoardlist();
+    BoardDto getPostOne(Long id);
 }
