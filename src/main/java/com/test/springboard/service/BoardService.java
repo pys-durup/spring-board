@@ -8,4 +8,5 @@ public interface BoardService {
     long savePost(BoardDto boardDto);
     List getBoardlist();
     BoardDto getPostOne(Long id);
+    void deletePost(Long id);
 }

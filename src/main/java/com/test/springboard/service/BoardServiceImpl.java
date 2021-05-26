@@ -65,4 +65,10 @@ public class BoardServiceImpl implements BoardService{
 
         return boardDto;
     }
+
+    // 게시글 삭제
+    @Override
+    public void deletePost(Long id) {
+        boardRepository.deleteById(id);
+    }
 }

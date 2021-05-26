@@ -46,7 +46,7 @@ public class BoardController {
     public String write(@ModelAttribute BoardDto boardDto,
                         HttpServletRequest request) {
         HttpSession session = request.getSession();
-        boardDto.setWriter((String)session.getAttribute("writer"));
+        boardDto.setWriter((String) session.getAttribute("writer"));
         boardService.savePost(boardDto);
 
         return "redirect:/boards";
@@ -81,11 +81,19 @@ public class BoardController {
                        @ModelAttribute BoardDto boardDto) {
         // 임시로 작성자 정보 생성후 설정
         HttpSession session = request.getSession();
-        boardDto.setWriter((String)session.getAttribute("writer"));
+        boardDto.setWriter((String) session.getAttribute("writer"));
         boardService.savePost(boardDto);
 
         // redirectAttributes 로 redirect 경로 처리
         redirectAttributes.addAttribute("id", id);
         return "redirect:/boards/{id}";
+    }
+
+    // 글 삭제 로직
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        boardService.deletePost(id);
+
+        return "redirect:/boards";
     }
 }
