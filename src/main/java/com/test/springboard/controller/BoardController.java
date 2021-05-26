@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,8 +62,30 @@ public class BoardController {
         return "board/view";
     }
 
-    @GetMapping("/edit")
-    public String edit() {
+    // 글 수정 폼
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable("id") Long id,
+                           Model model) {
+        BoardDto boardDto = boardService.getPostOne(id);
+
+        model.addAttribute("boardDto", boardDto);
         return "board/edit";
+    }
+
+
+    // 글 수정 로직
+    @PostMapping("/{id}/edit")
+    public String edit(@PathVariable("id") Long id,
+                       HttpServletRequest request,
+                       RedirectAttributes redirectAttributes,
+                       @ModelAttribute BoardDto boardDto) {
+        // 임시로 작성자 정보 생성후 설정
+        HttpSession session = request.getSession();
+        boardDto.setWriter((String)session.getAttribute("writer"));
+        boardService.savePost(boardDto);
+
+        // redirectAttributes 로 redirect 경로 처리
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/boards/{id}";
     }
 }

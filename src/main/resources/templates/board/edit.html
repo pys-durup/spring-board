@@ -21,14 +21,15 @@
     <section class="section_board">
         <article>
             <h2>글 수정하기</h2>
-            <form action="item.html" th:action="@{/board}" method="post">
+
+            <form action="item.html" th:action="|@{/boards/{id}/edit(id=${boardDto.id})}|" method="post">
                 <div>
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" class="form-control">
+                    <input type="text" id="title" name="title" class="form-control" th:value="${boardDto.title}">
                 </div>
                 <div>
-                    <label for="content">내용</label>
-                    <textarea class="w-100" id="content" name="content" rows="4" cols="50"></textarea>
+                    <label for="memo">내용</label>
+                    <textarea class="w-100" id="memo" name="memo" rows="4" cols="50" th:text="${boardDto.memo}"></textarea>
                 </div>
                 <hr class="my-4">
                 <div class="row">
