@@ -18,21 +18,32 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>글번호</th>
-                        <th>글제목</th>
-                        <th>글쓴이</th>
-                        <th>글 작성시간</th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성시간</th>
                         <th>조회수</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="record" onclick="location.href='view.html'" th:onclick="|location.href='@{/board/view}'|">
+
+                    <tr th:each="board : ${boardList}" >
+                        <td><span th:text="${board.id}"></span></td>
+                        <td><span th:text="${board.title}"></span></td>
+                        <td><span th:text="${board.writer}"></span></td>
+                        <td><span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+<!--                        <td><span th:text="${board.createDate}"></span></td>-->
+                        <td><span th:text="${board.hit}"></span></td>
+                    </tr>
+
+                    <!-- <tr class="record" onclick="location.href='view.html'" th:onclick="|location.href='@{/board/view}'|">
                         <td>1</td>
                         <td>글제목1</td>
                         <td>글쓴이1</td>
                         <td>시간</td>
                         <td>1</td>
-                    </tr>
+                    </tr> -->
+
                     </tbody>
                 </table>
             </article>

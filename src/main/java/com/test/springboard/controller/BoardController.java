@@ -5,6 +5,7 @@ import com.test.springboard.repository.BoardRepository;
 import com.test.springboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/boards")
@@ -24,9 +26,14 @@ public class BoardController {
     }
 
     @GetMapping
-    public String list(HttpServletRequest request) {
+    public String list(HttpServletRequest request,
+                       Model model) {
         HttpSession session = request.getSession();
         session.setAttribute("writer", "admin");
+
+        List boardList = boardService.getBoardlist();
+        model.addAttribute("boardList", boardList);
+
         return "board/main";
     }
 
