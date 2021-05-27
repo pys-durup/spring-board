@@ -15,6 +15,10 @@
         <section class="section_board">
             <article>
                 <h2>게시판</h2>
+                <button class="btn btn-primary float-end"
+                        th:onclick="|location.href='@{/boards/write}'|"
+                        onclick="location.href='write.html'" >글 쓰기
+                </button>
                 <table class="table">
                     <thead>
                     <tr>
@@ -49,10 +53,13 @@
                 </table>
             </article>
             <article>
-                <button class="btn btn-primary float-end"
-                        th:onclick="|location.href='@{/boards/write}'|"
-                        onclick="location.href='write.html'" >글 쓰기
-                </button>
+                <!-- 검색 form -->
+                <form action="/boards/search" method="GET">
+                    <div class="ml-2">
+                        <input class="float-left" name="keyword" type="text" placeholder="검색어를 입력해주세요">
+                        <button class="btn btn-primary float-left">검색하기</button>
+                    </div>
+                </form>
             </article>
         </section>
     </div>

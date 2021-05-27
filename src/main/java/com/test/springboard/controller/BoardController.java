@@ -23,6 +23,7 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+    // 글 목록 - 메인화면
     @GetMapping
     public String list(HttpServletRequest request,
                        Model model) {
@@ -31,6 +32,18 @@ public class BoardController {
 
         List boardList = boardService.getBoardlist();
         model.addAttribute("boardList", boardList);
+
+        return "board/main";
+    }
+
+    // 글 목록 - 검색결과
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "keyword") String keyword,
+                         Model model) {
+
+        List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
+
+        model.addAttribute("boardList", boardDtoList);
 
         return "board/main";
     }
