@@ -61,11 +61,58 @@
                     </div>
                 </form>
             </article>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <!-- 첫번째 페이지에는 이전 버튼 비활성화 -->
+                        <a th:if="${pageDto.curBlockNum} == 0" class="page-link" href="#" aria-label="Previous" >
+                            <span aria-hidden="true">&laquo;</span>
+<!--                            <button disabled>&laquo;</button>-->
+                        </a>
+
+                        <a th:unless="${pageDto.curBlockNum} == 0" class="page-link" th:href="@{'/boards?page=' + ${pageDto.blockPageNumCount * pageDto.curBlockNum }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <!-- 페이징 동적 생성-->
+                    <li th:each="pageNum : ${pageList}" class="page-item">
+                        <a class="page-link" href="#"
+                           th:href="@{'/boards?page=' + ${pageNum}}"  th:text="${pageNum}">1</a>
+                    </li>
+
+                    <!-- 마지막 페이지에는 다음 버튼 비활성화 -->
+                    <a th:if="${pageDto.curBlockNum == pageDto.lastPageBlockNum}" class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+
+                    <a th:unless="${pageDto.curBlockNum == pageDto.lastPageBlockNum}" class="page-link" th:href="@{'/boards?page=' + ${(pageDto.curBlockNum + 1) * pageDto.blockPageNumCount + 1}}" aria-label="Previous">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+
+                </ul>
+            </nav>
         </section>
     </div>
 
     <!-- footer -->
     <th:block th:replace="common/footer :: footerFragment"></th:block>
+
+    <!-- 변수 셋팅 -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var pageList = /*[[${pageList}]]*/ "";
+        var curPage = /*[[${pageDto.curPage}]]*/ "";
+        var curBlockNum = /*[[${pageDto.curBlockNum}]]*/ "";
+        var blockPageNumCount = /*[[${pageDto.blockPageNumCount}]]*/ "";
+        var lastPageBlockNum = /*[[${pageDto.lastPageBlockNum}]]*/ "";
+        /*]]>*/
+        console.log(pageList);
+        console.log(curPage);
+        console.log(curBlockNum);
+        console.log(blockPageNumCount);
+        console.log(lastPageBlockNum);
+    </script>
 
 </body>
 </html>

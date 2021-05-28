@@ -1,9 +1,11 @@
 package com.test.springboard.controller;
 
 import com.test.springboard.model.BoardDto;
+import com.test.springboard.model.PageDto;
 import com.test.springboard.repository.BoardRepository;
 import com.test.springboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +28,18 @@ public class BoardController {
     // 글 목록 - 메인화면
     @GetMapping
     public String list(HttpServletRequest request,
+                       @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
                        Model model) {
         HttpSession session = request.getSession();
         session.setAttribute("writer", "admin");
 
-        List boardList = boardService.getBoardlist();
+        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
+        Integer[] pageList = boardService.getPageList(pageNum);
+        PageDto pageDto = boardService.getBlockNum(pageNum);
+
         model.addAttribute("boardList", boardList);
+        model.addAttribute("pageList", pageList);
+        model.addAttribute("pageDto", pageDto);
 
         return "board/main";
     }
