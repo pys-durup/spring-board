@@ -23,6 +23,7 @@
                 <div>
                     <label for="title">제목</label>
                     <input type="text" id="title" name="title" class="form-control" th:value="${boardDto.title}"disabled>
+                    <input type="hidden" id="page" name="page" th:value="${pageNum}">
                 </div>
                 <div>
                     <label for="content">내용</label>
@@ -44,7 +45,7 @@
                     </div>
                     <div class="col">
                         <button class="w-100 btn btn-secondary"
-                                th:onclick="|location.href='@{/boards}'|"
+                                th:onclick="|location.href='@{/boards(page=${pageNum})}'|"
                                 onclick="location.href='main.html'" type="button">뒤로가기
                         </button>
                     </div>

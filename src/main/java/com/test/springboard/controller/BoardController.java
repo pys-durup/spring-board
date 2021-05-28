@@ -40,6 +40,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("pageList", pageList);
         model.addAttribute("pageDto", pageDto);
+        model.addAttribute("pageNum", pageNum);
 
         return "board/main";
     }
@@ -47,6 +48,7 @@ public class BoardController {
     // 글 목록 - 검색결과
     @GetMapping("/search")
     public String search(@RequestParam(value = "keyword") String keyword,
+                         @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
                          Model model) {
 
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
@@ -76,10 +78,12 @@ public class BoardController {
     // 글 상세정보 보기
     @GetMapping("/{id}")
     public String view(@PathVariable("id") Long id,
+                       @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
                        Model model) {
         BoardDto boardDto = boardService.getPostOne(id);
 
         model.addAttribute("boardDto", boardDto);
+        model.addAttribute("pageNum", pageNum);
         return "board/view";
     }
 
