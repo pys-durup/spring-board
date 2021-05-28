@@ -34,7 +34,7 @@
                     <tr th:each="board : ${boardList}" >
                         <td><span th:text="${board.id}"></span></td>
 <!--                        th:href="@{/order/{orderId}/details(orderId=${o.id})}"-->
-                        <td><a th:href="@{/boards/{id}(page=${pageNum},id=${board.id})}"><span th:text="${board.title}" ></span></a> </td>
+                        <td><a th:href="@{/boards/{id}(page=${pageNum},id=${board.id},keyword=${keyword})}"><span th:text="${board.title}" ></span></a> </td>
                         <td><span th:text="${board.writer}"></span></td>
                         <td><span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></span></td>
 <!--                        <td><span th:text="${board.createDate}"></span></td>-->

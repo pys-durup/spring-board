@@ -6,6 +6,9 @@ import com.test.springboard.repository.BoardRepository;
 import com.test.springboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,11 +52,17 @@ public class BoardController {
     @GetMapping("/search")
     public String search(@RequestParam(value = "keyword") String keyword,
                          @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+                         @PageableDefault(size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
                          Model model) {
 
-        List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
+        List<BoardDto> boardDtoList = boardService.searchPosts(keyword, pageable);
+        Integer[] pageList = boardService.getPageList(pageNum);
+        PageDto pageDto = boardService.getBlockNum(pageNum);
 
+        model.addAttribute("pageList", pageList);
+        model.addAttribute("pageDto", pageDto);
         model.addAttribute("boardList", boardDtoList);
+        model.addAttribute("keyword",keyword);
 
         return "board/main";
     }

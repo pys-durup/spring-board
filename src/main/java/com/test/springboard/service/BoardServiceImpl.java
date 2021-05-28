@@ -7,6 +7,7 @@ import com.test.springboard.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,8 +120,8 @@ public class BoardServiceImpl implements BoardService{
 
     // 게시글 목록 + 검색어
     @Override
-    public List<BoardDto> searchPosts(String keyword) {
-        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
+    public List<BoardDto> searchPosts(String keyword, Pageable pageable) {
+        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword, pageable);
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         if (boardEntities.isEmpty()) return boardDtoList;
