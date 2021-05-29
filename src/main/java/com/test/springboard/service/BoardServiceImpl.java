@@ -36,8 +36,8 @@ public class BoardServiceImpl implements BoardService{
 
     // 게시글 목록
     @Override
-    public List<BoardDto> getBoardlist(Integer pageNum) {
-        Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createDate")));
+    public List<BoardDto> getBoardlist(Integer pageNum, Pageable pageable) {
+        Page<BoardEntity> page = boardRepository.findAll(pageable);
 
         List<BoardEntity> boardEntities = page.getContent();
         List boardDtoList = new ArrayList<>();
@@ -56,20 +56,36 @@ public class BoardServiceImpl implements BoardService{
     }
 
     // 페이지 정보
-    public PageDto getBlockNum(Integer curPageNum) {
-        Integer curBlockNum = curPageNum % BLOCK_PAGE_NUM_COUNT != 0
-                ? curPageNum / BLOCK_PAGE_NUM_COUNT
-                : curPageNum / BLOCK_PAGE_NUM_COUNT - 1; // 현 블럭 페이지의 위치
-
-        Long postsTotalCount = this.getBoardCount();
-        Integer lastPageBlockNum = ((int)(Math.ceil((postsTotalCount / PAGE_POST_COUNT))) / BLOCK_PAGE_NUM_COUNT);
-
-        PageDto pageDto = new PageDto(curPageNum, curBlockNum, BLOCK_PAGE_NUM_COUNT, lastPageBlockNum);
-        return pageDto;
-    }
+//    public PageDto getBlockNum(Integer curPageNum, String keyword) {
+//        Long postsTotalCount;
+//        if (keyword.equals("")) {
+//            postsTotalCount = this.getBoardCount();
+//        } else {
+//            Page<BoardEntity> page = boardRepository.findAll(pageable);
+//            postsTotalCount =
+//        }
+//
+//        Integer curBlockNum = curPageNum % BLOCK_PAGE_NUM_COUNT != 0
+//                ? curPageNum / BLOCK_PAGE_NUM_COUNT
+//                : curPageNum / BLOCK_PAGE_NUM_COUNT - 1; // 현 블럭 페이지의 위치
+//
+//
+//        Integer lastPageBlockNum = ((int)(Math.ceil((postsTotalCount / PAGE_POST_COUNT))) / BLOCK_PAGE_NUM_COUNT);
+//
+//        PageDto pageDto = new PageDto(curPageNum, curBlockNum, BLOCK_PAGE_NUM_COUNT, lastPageBlockNum);
+//        return pageDto;
+//    }
 
     // 페이징 블럭갯수 계산
-    public Integer[] getPageList(Integer curPageNum) {
+    public PageDto getPageList(Integer curPageNum, String keyword, Pageable pageable) {
+        Long postsTotalCount; // 총 게시글 개수
+        if (keyword.equals("")) {
+            postsTotalCount = this.getBoardCount();
+        } else {
+            Page<BoardEntity> page = boardRepository.findAll(pageable);
+            postsTotalCount = Long.valueOf(page.getTotalPages());
+        }
+
         Integer[] pageList;
         Integer curBlockNum = curPageNum % BLOCK_PAGE_NUM_COUNT != 0
                 ? curPageNum / BLOCK_PAGE_NUM_COUNT
@@ -78,13 +94,9 @@ public class BoardServiceImpl implements BoardService{
         Integer blockStartPageNum = 1 + (curBlockNum * BLOCK_PAGE_NUM_COUNT); // 표시할 시작
         Integer blockLastPageNum = (curBlockNum * BLOCK_PAGE_NUM_COUNT) + BLOCK_PAGE_NUM_COUNT;; // 표시할 끝
 
-
         System.out.println("curBlockNum = " + curBlockNum);
         System.out.println("blockStartPageNum = " + blockStartPageNum);
         System.out.println("blockLastPageNum = " + blockLastPageNum);
-
-        // 총 게시글 개수
-        Double postsTotalCount = Double.valueOf(this.getBoardCount());
 
         // 총 게시물 기준으로 계산한 마지막 페이지 번호 = 총 페이지 블럭 개수
         Integer totalBlockNum = (int) (Math.ceil((postsTotalCount / PAGE_POST_COUNT)));
@@ -93,17 +105,19 @@ public class BoardServiceImpl implements BoardService{
             blockLastPageNum = totalBlockNum;
         }
 
-        pageList = new Integer[blockLastPageNum - blockStartPageNum + 1];
+        Integer lastPageBlockNum = ((int)(Math.ceil((postsTotalCount / PAGE_POST_COUNT))) / BLOCK_PAGE_NUM_COUNT);
 
-        // 페이지 시작 번호 조정
-        // curPageNum = (curPageNum <= 3) ? 1 : curPageNum - 2;
+        pageList = new Integer[blockLastPageNum - blockStartPageNum + 1];
 
         // 페이지 번호 할당
         for (int val = blockStartPageNum, idx = 0; val <= blockLastPageNum; val++, idx++) {
             pageList[idx] = val;
         }
 
-        return pageList;
+        PageDto pageDto = new PageDto(curPageNum, curBlockNum, BLOCK_PAGE_NUM_COUNT, lastPageBlockNum, pageList);
+
+
+        return pageDto;
     }
 
     // Entity to Dto

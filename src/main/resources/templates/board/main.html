@@ -54,9 +54,9 @@
             </article>
             <article>
                 <!-- 검색 form -->
-                <form action="/boards/search" method="GET">
+                <form action="/boards" method="GET">
                     <div class="ml-2">
-                        <input class="float-left" name="keyword" type="text" placeholder="검색어를 입력해주세요">
+                        <input class="float-left" name="keyword" type="text" th:value="${keyword}" placeholder="검색어를 입력해주세요">
                         <button class="btn btn-primary float-left">검색하기</button>
                     </div>
                 </form>
@@ -76,9 +76,11 @@
                         </a>
                     </li>
                     <!-- 페이징 동적 생성-->
-                    <li th:each="pageNum : ${pageList}" class="page-item">
+                    <li th:each="pageNum : ${pageDto.pageList}" class="page-item">
                         <a class="page-link" href="#"
-                           th:href="@{'/boards?page=' + ${pageNum}}"  th:text="${pageNum}">1</a>
+                           th:href="@{/boards(page=${pageNum - 1},keyword=${keyword})}"  th:text="${pageNum}">1</a>
+<!--                           th:href="@{'/boards?page=' + ${pageNum}"  th:text="${pageNum}">1</a>-->
+
                     </li>
 
                     <!-- 마지막 페이지에는 다음 버튼 비활성화 -->

@@ -31,41 +31,50 @@ public class BoardController {
     // 글 목록 - 메인화면
     @GetMapping
     public String list(HttpServletRequest request,
+                       @RequestParam(value = "keyword", defaultValue = "") String keyword,
                        @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+                       @PageableDefault(size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
                        Model model) {
+        // 임시 세션처리
         HttpSession session = request.getSession();
         session.setAttribute("writer", "admin");
+        List<BoardDto> boardList;
 
-        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
-        Integer[] pageList = boardService.getPageList(pageNum);
-        PageDto pageDto = boardService.getBlockNum(pageNum);
+        // 검색어 없을때
+        if (keyword.equals("")){
+            boardList = boardService.getBoardlist(pageNum, pageable);
+        } else { // 검색어 있을때
+            boardList = boardService.searchPosts(keyword, pageable);
+        }
+
+        PageDto pageDto = boardService.getPageList(pageNum, keyword, pageable);
 
         model.addAttribute("boardList", boardList);
-        model.addAttribute("pageList", pageList);
         model.addAttribute("pageDto", pageDto);
         model.addAttribute("pageNum", pageNum);
+        model.addAttribute("keyword", keyword);
 
         return "board/main";
     }
 
     // 글 목록 - 검색결과
-    @GetMapping("/search")
-    public String search(@RequestParam(value = "keyword") String keyword,
-                         @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
-                         @PageableDefault(size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
-                         Model model) {
-
-        List<BoardDto> boardDtoList = boardService.searchPosts(keyword, pageable);
-        Integer[] pageList = boardService.getPageList(pageNum);
-        PageDto pageDto = boardService.getBlockNum(pageNum);
-
-        model.addAttribute("pageList", pageList);
-        model.addAttribute("pageDto", pageDto);
-        model.addAttribute("boardList", boardDtoList);
-        model.addAttribute("keyword",keyword);
-
-        return "board/main";
-    }
+//    @GetMapping("/search")
+//    public String search(@RequestParam(value = "keyword") String keyword,
+//                         @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+//                         @PageableDefault(size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
+//                         Model model) {
+//
+//        List<BoardDto> boardDtoList = boardService.searchPosts(keyword, pageable);
+//        Integer[] pageList = boardService.getPageList(pageNum);
+//        PageDto pageDto = boardService.getBlockNum(pageNum);
+//
+//        model.addAttribute("pageList", pageList);
+//        model.addAttribute("pageDto", pageDto);
+//        model.addAttribute("boardList", boardDtoList);
+//        model.addAttribute("keyword",keyword);
+//
+//        return "board/main";
+//    }
 
     // 글쓰기 폼
     @GetMapping("/write")
