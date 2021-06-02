@@ -36,7 +36,7 @@ public class BoardServiceImpl implements BoardService{
 
     // 게시글 목록
     @Override
-    public List<BoardDto> getBoardlist(Integer pageNum, Pageable pageable) {
+    public List<BoardDto> getBoardlist(Pageable pageable) {
         Page<BoardEntity> page = boardRepository.findAll(pageable);
 
         List<BoardEntity> boardEntities = page.getContent();
@@ -79,14 +79,19 @@ public class BoardServiceImpl implements BoardService{
     // 페이징 블럭갯수 계산
     public PageDto getPageList(Integer curPageNum, String keyword, Pageable pageable) {
         Long postsTotalCount; // 총 게시글 개수
-        if (keyword.equals("")) {
-            postsTotalCount = this.getBoardCount();
-        } else {
-            Page<BoardEntity> page = boardRepository.findAll(pageable);
-            postsTotalCount = Long.valueOf(page.getTotalPages());
-        }
 
+        // 총 게시글 개수 계산
+        if (keyword.equals("")) { // 검색어가 없으면
+            postsTotalCount = this.getBoardCount();
+        } else { // 검색어가 있으면
+            List<BoardEntity> boardEntityList = boardRepository.findByTitleContaining(keyword);
+            postsTotalCount = Long.valueOf(boardEntityList.size());
+        }
+        System.out.println("postsTotalCount = " + postsTotalCount);
+
+        // 페이지 블럭 번호를 담을 배열
         Integer[] pageList;
+        // 현재 블럭이 몇번째 블럭순서에 위치하고 있는지
         Integer curBlockNum = curPageNum % BLOCK_PAGE_NUM_COUNT != 0
                 ? curPageNum / BLOCK_PAGE_NUM_COUNT
                 : curPageNum / BLOCK_PAGE_NUM_COUNT - 1; // 현 블럭 페이지의 위치
@@ -96,14 +101,18 @@ public class BoardServiceImpl implements BoardService{
 
         System.out.println("curBlockNum = " + curBlockNum);
         System.out.println("blockStartPageNum = " + blockStartPageNum);
-        System.out.println("blockLastPageNum = " + blockLastPageNum);
 
-        // 총 게시물 기준으로 계산한 마지막 페이지 번호 = 총 페이지 블럭 개수
-        Integer totalBlockNum = (int) (Math.ceil((postsTotalCount / PAGE_POST_COUNT)));
 
+
+        // 총 게시물 기준으로 계산한 마지막 페이지 번호 = 총 페이지 블럭 개수 (게시글 개수 / 한 페이지에 표시할 게시글 개수)
+        Integer totalBlockNum = (int) (Math.ceil(((float)postsTotalCount / PAGE_POST_COUNT)));
+
+        // 마지막 페이지 번호
         if (blockLastPageNum > totalBlockNum) {
             blockLastPageNum = totalBlockNum;
         }
+
+        System.out.println("blockLastPageNum = " + blockLastPageNum);
 
         Integer lastPageBlockNum = ((int)(Math.ceil((postsTotalCount / PAGE_POST_COUNT))) / BLOCK_PAGE_NUM_COUNT);
 

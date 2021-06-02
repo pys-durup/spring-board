@@ -32,7 +32,7 @@ public class BoardController {
     @GetMapping
     public String list(HttpServletRequest request,
                        @RequestParam(value = "keyword", defaultValue = "") String keyword,
-                       @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+                       @RequestParam(value = "page", defaultValue = "0") Integer pageNum,
                        @PageableDefault(size = 4, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable,
                        Model model) {
         // 임시 세션처리
@@ -40,14 +40,17 @@ public class BoardController {
         session.setAttribute("writer", "admin");
         List<BoardDto> boardList;
 
+        // pageable 관련 페이지 번호를 수정
+//        if (pageNum > 0) pageNum -= 1;
+
         // 검색어 없을때
         if (keyword.equals("")){
-            boardList = boardService.getBoardlist(pageNum, pageable);
+            boardList = boardService.getBoardlist(pageable);
         } else { // 검색어 있을때
             boardList = boardService.searchPosts(keyword, pageable);
         }
 
-        PageDto pageDto = boardService.getPageList(pageNum, keyword, pageable);
+        PageDto pageDto = boardService.getPageList(pageNum + 1, keyword, pageable);
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("pageDto", pageDto);

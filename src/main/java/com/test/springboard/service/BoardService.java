@@ -11,7 +11,7 @@ public interface BoardService {
 //    List<BoardDto> searchPosts(String keyword);
     List<BoardDto> searchPosts(String keyword, Pageable pageable);
     long savePost(BoardDto boardDto);
-    List getBoardlist(Integer pageNum, Pageable pageable);
+    List getBoardlist(Pageable pageable);
     BoardDto getPostOne(Long id);
     void deletePost(Long id);
     public Long getBoardCount();
