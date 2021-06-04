@@ -24,6 +24,32 @@
 </head>
 
 <body>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(){
+            // Handler when the DOM is fully loaded
+            let btnCheckDuplicate = document.getElementById('btnCheckDuplicate');
+            btnCheckDuplicate.addEventListener('click', checkDuplicate);
+        });
+
+
+        function checkDuplicate() {
+            let username = document.getElementById('username');
+            //console.log(username.value);
+            let url = "/signUp/" + username.value;
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                console.log("response value = " + this.responseText);
+            };
+
+            xhttp.open("GET", url, true);
+            xhttp.send();
+
+        }
+    </script>
+
     <!-- header -->
     <div th:insert="/common/header :: header"></div>
 
@@ -37,7 +63,7 @@
                         <input type="text" class="form-control" id="username" name="username">
                     </div>
                     <div class="col-sm-3">
-                        <button type="button" class="btn btn-dark">중복체크</button>
+                        <button type="button" class="btn btn-dark" id="btnCheckDuplicate" name="btnCheckDuplicate">중복체크</button>
                     </div>
                 </div>
 
@@ -75,7 +101,9 @@
         </form>
     </section>
     <!-- footer -->
-    <th:block th:replace="common/footer :: footerFragment"></th:block>
+    <th/:block th:replace="common/footer :: footerFragment"></th:block>
+
+
 </body>
 
 </html>

@@ -4,10 +4,7 @@ import com.test.springboard.model.MemberDTO;
 import com.test.springboard.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
@@ -27,11 +24,14 @@ public class LoginController {
         return "login/login";
     }
 
+    // 회원가입 폼
     @GetMapping("/signUp")
     public String signUpForm() {
         return "login/signUp";
     }
 
+    
+    // 회원가입 로직
     @PostMapping("/signUp")
     public String signUp(@ModelAttribute MemberDTO memberdto) {
 
@@ -40,5 +40,14 @@ public class LoginController {
 
 
         return "redirect:/login";
+    }
+    
+    // 아이디 중복 체크 로직
+    @ResponseBody
+    @GetMapping("/signUp/{id}")
+    public String checkDuplicate(@PathVariable String id) {
+        System.out.println("id = " + id);
+
+        return id;
     }
 }
