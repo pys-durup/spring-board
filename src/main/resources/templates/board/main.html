@@ -71,7 +71,7 @@
 <!--                            <button disabled>&laquo;</button>-->
                         </a>
 
-                        <a th:unless="${pageDto.curBlockNum} == 0" class="page-link" th:href="@{'/boards?page=' + ${pageDto.blockPageNumCount * pageDto.curBlockNum - 1}}" aria-label="Previous">
+                        <a th:unless="${pageDto.curBlockNum} == 0" class="page-link" th:href="@{'/boards?page=' + ${pageDto.blockPageNumCount * pageDto.curBlockNum - 1} + '&keyword=' + ${keyword}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -88,7 +88,7 @@
                         <span aria-hidden="true">&raquo;</span>
                     </a>
 
-                    <a th:unless="${pageDto.curBlockNum == pageDto.lastPageBlockNum}" class="page-link" th:href="@{'/boards?page=' + ${(pageDto.curBlockNum + 1) * pageDto.blockPageNumCount}}" aria-label="Previous">
+                    <a th:unless="${pageDto.curBlockNum == pageDto.lastPageBlockNum}" class="page-link" th:href="@{'/boards?page=' + ${(pageDto.curBlockNum + 1) * pageDto.blockPageNumCount} + '&keyword=' + ${keyword}}" aria-label="Previous">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
 
